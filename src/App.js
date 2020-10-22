@@ -1,12 +1,12 @@
 import React from 'react';
-import './App.css';
+import Routes from './routes';
+import Header from './character/Header';
 
-function App() {
-  return (
-    <h1>
-      Olá
-    </h1>
-  );
-}
+const App = () => (
+  <div>
+    <Header />
+    <Routes />
+  </div>
+)
 
 export default App;

@@ -1,0 +1,17 @@
+Header#main-header {
+    width: 100%;
+    background: #292929;
+    font-size: 30px;
+    padding: 0 0 25px 0;
+    color: #fff;
+    margin: 0px auto 20px;
+    height: bold;
+}
+#main-header div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom-width: thin;
+    border-bottom-style: inset;
+    border-bottom-color: #d3d3d3;
+}
