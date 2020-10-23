@@ -1,7 +1,11 @@
 import { all } from 'redux-saga/effects';
 
-function* Saga() {
-    yield all([]);
+import CharactersSagas from '../character/CharactersSagas';
+
+function* Sagas() {
+    yield all([
+        CharactersSagas
+    ]);
 };
 
-export default Saga;
+export default Sagas;

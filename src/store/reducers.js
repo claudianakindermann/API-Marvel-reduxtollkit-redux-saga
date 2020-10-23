@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-// import charactersReducer from 'container/Characters';
+import charactersReducer from '../character/charactersSlice';
 
 const reducers = combineReducers({
-    // character: charactersReducer
+    characters: charactersReducer,
 });
 
 export default reducers;
