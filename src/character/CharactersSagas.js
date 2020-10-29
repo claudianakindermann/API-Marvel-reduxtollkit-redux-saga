@@ -7,9 +7,10 @@ import {
 
 import { getCharacters } from './CharactersService';
 
-export function* getCharactersRequestSaga() {
+export function* getCharactersRequestSaga(payload) {
+    console.log('saga payload=', payload)
     try {
-        const { data } = yield call (getCharacters)
+        const { data } = yield call (getCharacters, payload)
         console.log('************** saga data ==', data);
         yield put(getChactersSucess(data))
     } catch (error) {

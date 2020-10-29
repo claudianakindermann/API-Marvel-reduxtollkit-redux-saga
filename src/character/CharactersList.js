@@ -1,33 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getCharactersRequest } from './charactersSlice';
 import './Characters.style.css';
 
-const Characters = () => {
+const CharactersList = ({ characters, page, total}) => {
     const dispatch = useDispatch()
+    const [ totalElements, setTotalElements ] = useState(0);
 
-    useEffect(() => {
-      dispatch(getCharactersRequest(0))
-    }, [dispatch])
-
-    const { characters } = useSelector(state => state.characters);     
-    const { count, limit, offset, total, page } = useSelector(state => state.characters.paging);    
-    console.log('componente characters >>', characters);
-    console.log('componente count >>', count);
-    console.log('componente limit >>', limit);
-    console.log('componente offset >>', offset);
-    console.log('componente total >>', total);
+    // const { characters } = useSelector(state => state.characters);     
+    // const { count, limit, offset, total, page } = useSelector(state => state.characters.paging);    
+    console.log('list characters >>', characters);
+    // console.log('list count >>', count);
+    // console.log('list limit >>', limit);
+    // console.log('list offset >>', offset);
+    console.log('list total >>', total);
 
     const nextPage = () => {
+        // setPageAtual(0);
+        // const { totalCharacter, pageAtual } = this.state;
         console.log('nextPage page: ', page)
-        
-        if (page >= total) return;        
-        const offset = page + 60;       
-        console.log('nextPage totalElements: ', offset);
 
-        dispatch(getCharactersRequest(offset))
-    };
+        if (page > total) return;        
+        // const totalElements = page + 60;       
+        setTotalElements(page + 60);
+        console.log('nextPage totalElements: ', totalElements)
+        dispatch(getCharactersRequest(totalElements))
+    }
 
     return (
         <>
@@ -50,12 +49,11 @@ const Characters = () => {
                     </ul>
                 ))}
                 <div className='actions'>
-                    <button onClick={nextPage}>Próxima</button>  
-                    {/* nextPage deve ser passado como referência! Sem () */}
+                    <button onClick={nextPage()}>Próxima</button>
                 </div>
             </div>
         </>
    )
 };
 
-export default Characters;
+export default CharactersList;
