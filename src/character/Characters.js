@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getCharactersRequest } from './charactersSlice';
+import { 
+    getCharactersRequest,
+    getCharactersPrev,
+    getCharactersNext
+        } from './charactersSlice';
 import './Characters.style.css';
 
 const Characters = () => {
@@ -12,21 +16,22 @@ const Characters = () => {
     }, [dispatch])
 
     const { characters } = useSelector(state => state.characters);     
-    const { count, limit, offset, total, page } = useSelector(state => state.characters.paging);    
-    console.log('componente characters >>', characters);
-    console.log('componente count >>', count);
-    console.log('componente limit >>', limit);
-    console.log('componente offset >>', offset);
-    console.log('componente total >>', total);
+    const { total, page } = useSelector(state => state.characters.paging);    
 
     const nextPage = () => {
-        console.log('nextPage page: ', page)
-        
         if (page >= total) return;        
-        const offset = page + 60;       
-        console.log('nextPage totalElements: ', offset);
 
-        dispatch(getCharactersRequest(offset))
+        const offset = page + 60;       
+        
+        dispatch(getCharactersNext(offset))
+    };
+
+    const prevPage = () => {
+        if (page === 0) return;
+        
+        const offset = page - 60;
+
+        dispatch(getCharactersPrev(offset))
     };
 
     return (
@@ -50,7 +55,8 @@ const Characters = () => {
                     </ul>
                 ))}
                 <div className='actions'>
-                    <button onClick={nextPage}>Próxima</button>  
+                    <button onClick={prevPage}>Prev</button>
+                    <button onClick={nextPage}>Next</button>  
                     {/* nextPage deve ser passado como referência! Sem () */}
                 </div>
             </div>

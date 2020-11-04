@@ -8,7 +8,6 @@ const hash = md5.create();
 hash.update(timestamp + PRIVATE_KEY + PUBLIC_KEY);
 
 export async function getCharacters({ payload }){
-    console.log('************************  service getCharacters', payload);
     return axios.get(`https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&orderBy=name&limit=60&offset=${payload}&apikey=${PUBLIC_KEY}&hash=${hash.hex()}`);
 };
 
