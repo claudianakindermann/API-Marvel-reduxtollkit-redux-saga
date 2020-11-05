@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { 
     getCharactersRequest,
     getCharactersPrev,
-    getCharactersNext
+    getCharactersNext,
+    saveSelectedCharacter
         } from './charactersSlice';
 import './Characters.style.css';
 
@@ -34,6 +35,11 @@ const Characters = () => {
         dispatch(getCharactersPrev(offset))
     };
 
+    const saveCharacter = (character) => {
+        console.log('save =', character);
+        dispatch(saveSelectedCharacter(character))
+    };
+
     return (
         <>
             <div className='charactersList'>
@@ -50,7 +56,7 @@ const Characters = () => {
                         </div>
                         <div className="itemData">
                             <p><strong>{character.name}</strong></p> 
-                            <Link to={`/characters/${character.id}`}>Acessar</Link>  
+                            <Link onClick={() => saveCharacter(character)} to={`/characters/${character.id}`}>Acessar</Link>  
                         </div>              
                     </ul>
                 ))}

@@ -40,6 +40,12 @@ const charactersSlice = createSlice({
       state.paging.page = state.paging.page - 60;
       state.paging.total = payload.data.total;
       state.characters = payload.data.results;
+    },
+    saveSelectedCharacter: (state, {payload}) => {
+      console.log('saveSelectedCharacter payload=', payload)
+      state.loading = false;
+      state.character = payload;      
+      console.log('saveSelectedCharacter state=', state.character);
     }
   }
 })
@@ -51,6 +57,7 @@ export const {
     getCharactersNextSucess,
     getCharactersPrev,
     getCharactersPrevSucess,
+    saveSelectedCharacter,
 } = charactersSlice.actions
 
 export default charactersSlice.reducer;
