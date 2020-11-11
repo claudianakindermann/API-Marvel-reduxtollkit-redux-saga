@@ -7,15 +7,20 @@ import {
     getCharactersNextSucess,
     getCharactersPrev,
     getCharactersPrevSucess,
-} from "./charactersSlice";
+    getProfileRequest,
+    getProfileSucess,
+} from './charactersSlice';
 
-import { getCharacters } from './CharactersService';
+import {
+    getCharacters,
+    getProfile
+} from './CharactersService';
 
 export function* getCharactersRequestSaga(payload) {
     try {
         const { data } = yield call (getCharacters, payload)
         yield put(getCharactersSucess(data))
-    } catch (error) {
+    } catch (error) {        
         console.log(error)
     }    
 }
@@ -39,9 +44,20 @@ export  function* getCharactersPrevSaga(payload) {
     }
 }
 
+export function* getProfileRequestSaga(payload) {
+    try {
+        const { data } = yield call (getProfile, payload)
+        console.log('retorno do service', data)
+        yield put(getProfileSucess(data))
+    } catch (error) {
+        console.log(error)        
+    }
+}
+
 export default all([
     takeLatest(getCharactersRequest.type, getCharactersRequestSaga),
     takeLatest(getCharactersNext.type, getCharactersNextSaga),
     takeLatest(getCharactersPrev.type, getCharactersPrevSaga),
+    takeLatest(getProfileRequest.type, getProfileRequestSaga),
 ]);
 

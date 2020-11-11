@@ -4,17 +4,16 @@ import { Link } from 'react-router-dom';
 import { 
     getCharactersRequest,
     getCharactersPrev,
-    getCharactersNext,
-    saveSelectedCharacter
+    getCharactersNext
         } from './charactersSlice';
 import './Characters.style.css';
 
 const Characters = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     useEffect(() => {
       dispatch(getCharactersRequest(0))
-    }, [dispatch])
+    }, [dispatch]);
 
     const { characters } = useSelector(state => state.characters);     
     const { total, page } = useSelector(state => state.characters.paging);    
@@ -35,11 +34,6 @@ const Characters = () => {
         dispatch(getCharactersPrev(offset))
     };
 
-    const saveCharacter = (character) => {
-        console.log('save =', character);
-        dispatch(saveSelectedCharacter(character))
-    };
-
     return (
         <>
             <div className='charactersList'>
@@ -56,13 +50,13 @@ const Characters = () => {
                         </div>
                         <div className="itemData">
                             <p><strong>{character.name}</strong></p> 
-                            <Link onClick={() => saveCharacter(character)} to={`/characters/${character.id}`}>Acessar</Link>  
+                            <Link to={`/characters/${character.id}`}>Acessar</Link>  
                         </div>              
                     </ul>
                 ))}
                 <div className='actions'>
-                    <button onClick={prevPage}>Prev</button>
-                    <button onClick={nextPage}>Next</button>  
+                    <button disabled={page === 0} onClick={prevPage}>Prev</button>
+                    <button disabled={page >= total} onClick={nextPage}>Next</button>  
                     {/* nextPage deve ser passado como referência! Sem () */}
                 </div>
             </div>

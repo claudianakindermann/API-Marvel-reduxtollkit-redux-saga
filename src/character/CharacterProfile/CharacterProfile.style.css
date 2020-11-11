@@ -1,0 +1,48 @@
+.characterInfo {
+    background: #202020;
+    margin-top: -20px;
+    padding: 0px 100px;
+    display: flex;
+    align-items: flex-stretch;
+}
+
+.divImagem {
+    width: 400;
+}
+
+/* .image {
+    margin-left: 40px;
+} */
+
+.description {
+ background: #fff;
+ /* color: #454554;    */
+ color: #202020;
+ width: 600px;
+}
+
+.description span {
+    font-size: 40px;
+    padding: 20px;
+    display: block;
+    font-weight: bold;
+}
+
+.description form{
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    /* margin: 30px; */
+}
+
+.description form input {
+    border: 1px solid #aaaaaa;
+    border-radius: 4px;
+    background: fff;
+    height: 80px;
+    padding: 5px;
+}
+
+/* .series {
+    background: #202020;
+} */

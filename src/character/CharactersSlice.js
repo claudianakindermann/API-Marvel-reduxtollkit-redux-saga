@@ -4,6 +4,7 @@ export const initialState = {
     loading: false,
     characters: [],
     character: {},
+    imageCharacter: {},
     paging: {
         total: 0,
         page: 0,
@@ -23,6 +24,17 @@ const charactersSlice = createSlice({
       state.paging.total = payload.data.total;
       state.characters = payload.data.results;
     }, 
+    getProfileRequest: state => {
+      state.loading = true;
+    },
+    getProfileSucess: (state, {payload}) => {
+      console.log('slice');
+      state.loading = false;
+      state.character = payload.data.results[0];
+      state.imageCharacter = payload.data.results[0].thumbnail ;
+      console.log('slice character: ', state.character);
+      console.log('slice imageCharacter: ', state.imageCharacter);
+    },
     getCharactersNext: state => {
       state.loading = true;
     },
@@ -41,12 +53,6 @@ const charactersSlice = createSlice({
       state.paging.total = payload.data.total;
       state.characters = payload.data.results;
     },
-    saveSelectedCharacter: (state, {payload}) => {
-      console.log('saveSelectedCharacter payload=', payload)
-      state.loading = false;
-      state.character = payload;      
-      console.log('saveSelectedCharacter state=', state.character);
-    }
   }
 })
 
@@ -58,6 +64,8 @@ export const {
     getCharactersPrev,
     getCharactersPrevSucess,
     saveSelectedCharacter,
-} = charactersSlice.actions
+    getProfileRequest,
+    getProfileSucess
+  } = charactersSlice.actions
 
 export default charactersSlice.reducer;

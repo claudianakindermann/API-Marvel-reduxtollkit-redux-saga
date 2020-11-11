@@ -3,7 +3,7 @@ import { Switch, BrowserRouter, Route} from 'react-router-dom';
 import Characters from './character/Characters';
 import CharacterProfile from './character/CharacterProfile/CharacterProfile';
 
-const Routes = () => (  //dúvida clau pq não abre chaves??
+const Routes = () => (
     <BrowserRouter>
         <Switch>
             <Route exact path='/' component={Characters} />

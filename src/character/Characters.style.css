@@ -11,10 +11,10 @@
     padding-left: 0px;
 }
 
-/* .divImage:hover {
+.divImage:hover {
     display: none;
     background-color: #ff0000;
-}  */
+} 
 
 .itemData {
     background: #151515;
@@ -47,10 +47,10 @@
     cursor: pointer;
 }
 
-/* .actions button[disabled] {
+.actions button[disabled] {
     opacity: 0.5;
     cursor: default;
-} */
+}
 
 /* .actions button[disabled]:hover {
     opacity: 0.5;
