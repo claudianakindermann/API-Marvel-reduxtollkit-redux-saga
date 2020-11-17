@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     margin: auto;
     max-width: 1200px;
+    height: 100vh;
 }
 
 .charactersItem {
@@ -48,13 +49,9 @@
 }
 
 .actions button[disabled] {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: default;
 }
-
-/* .actions button[disabled]:hover {
-    opacity: 0.5;
-} */
 
 .actions button:hover {
     opacity: 0.5;

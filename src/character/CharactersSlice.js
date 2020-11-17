@@ -4,7 +4,6 @@ export const initialState = {
     loading: false,
     characters: [],
     character: {},
-    imageCharacter: {},
     paging: {
         total: 0,
         page: 0,
@@ -28,12 +27,9 @@ const charactersSlice = createSlice({
       state.loading = true;
     },
     getProfileSucess: (state, {payload}) => {
-      console.log('slice');
       state.loading = false;
       state.character = payload.data.results[0];
-      state.imageCharacter = payload.data.results[0].thumbnail ;
       console.log('slice character: ', state.character);
-      console.log('slice imageCharacter: ', state.imageCharacter);
     },
     getCharactersNext: state => {
       state.loading = true;

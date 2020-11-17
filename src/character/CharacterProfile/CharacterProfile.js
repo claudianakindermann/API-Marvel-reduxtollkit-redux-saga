@@ -1,57 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './CharacterProfile.style.css';
 import { useParams } from "react-router-dom";
 import { getProfileRequest } from './../charactersSlice';
 
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers';
+import * as yup from "yup";
+
+import useStyles from './CharacterProfile.style.js';
+import { TextField, Button, Grid } from '@material-ui/core';
+
+const schema = yup.object().shape({
+    description: yup.string().required(),
+  });
+
 const CharacterProfile = () => {
-    // const [ idCharacter, setIdCharacter ] = useState(); 
     const dispatch = useDispatch();
+    const classes = useStyles();
     
+    const { register, handleSubmit, errors, reset , setValue} = useForm({
+        resolver: yupResolver(schema)
+    });
+  
     const { id } = useParams(); //pegando da url
-    //setIdCharacter(idCharacter);
+    const descriptionLocal = (localStorage.getItem(id))
+
     console.log('id', id)
 
     useEffect(() => {
-        console.log('dispatch');
         dispatch(getProfileRequest(id))
-    }, [dispatch, id]);
+        if (!!descriptionLocal) {
+            setValue('description', descriptionLocal)
+        };        
+    }, [dispatch, id, setValue, descriptionLocal], );
 
     const { character }  = useSelector(state => state.characters);
-    console.log('profile character = ', character);
-    const { imageCharacter }  = useSelector(state => state.characters);
+    console.log('profile character = ', character?.thumbnail?.path);
 
     // if (!character) {
     //     return load
     // }
 
+    const onSubmit = values => {
+        localStorage.setItem(id, values.description)
+    };
+
     return (
-        <div className='characterInfo'>
-            <div className='divImagem'>
-                <img 
-                    className='image' 
-                    src={imageCharacter.path + '.' + imageCharacter.extension} 
-                    alt={imageCharacter.path + '.' + imageCharacter.extension} 
-                    width='800' 
-                />
-            </div>
-            <div className='description'>
-                <span>{character.name}</span>
-                <div>
-                    <label htmlFor='Description'>Description</label>
-                    <textarea 
-                        id='Description' 
-                        name='Description'
-                        cols='50'
-                        rows='10'
-                        value={localStorage.getItem(character.name)}
-                        // onChange={this.onChange}
+        <form className={classes.characterInfo} noValidate onSubmit={handleSubmit(onSubmit)}>     
+            <Grid spacing={1} className={classes.content}>
+                    <img className={classes.divImagem}
+                        src={character?.thumbnail?.path + '.' + character?.thumbnail?.extension} 
+                        alt={character?.thumbnail?.path + '.' + character?.thumbnail?.extension} 
                     />
-                    {/* <button onClick={this.onSubmit}>Salvar</button> */}
-                </div>
-            </div>
-        </div>
+                <Grid item xs={2} sm={4} className={classes.descriptionContent}>
+                    <h1 classname={classes.titulo}>{character.name}</h1>
+                    <TextField
+                        inputRef={register}
+                        errors={errors}
+                        name='description'
+                        multiline={true}            
+                        rows={15}
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        id='description'
+                        label='Description'
+                        size="small"
+                        InputLabelProps={{shrink:true}}
+                    />
+                    <Button                        
+                        className={classes.buttonSave}
+                        type='submit'
+                        variant='contained'                      
+                        color='secundary'
+                    >
+                        Save
+                    </Button>
+                </Grid>
+            </Grid>  
+        </form>
     )
+
 };
 
 export default CharacterProfile;

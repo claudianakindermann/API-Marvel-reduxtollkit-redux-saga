@@ -9,7 +9,7 @@ import Header from './character/Header/Header';
 ReactDOM.render(
     <Provider store={store}>
       <Header />
-      <Routes />
+      <Routes />      
     </Provider>,
   document.getElementById('root')
 );
