@@ -18,7 +18,7 @@ const CharacterProfile = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     
-    const { register, handleSubmit, errors, reset , setValue} = useForm({
+    const { register, handleSubmit, errors, setValue} = useForm({
         resolver: yupResolver(schema)
     });
   
@@ -36,10 +36,6 @@ const CharacterProfile = () => {
 
     const { character }  = useSelector(state => state.characters);
     console.log('profile character = ', character?.thumbnail?.path);
-
-    // if (!character) {
-    //     return load
-    // }
 
     const onSubmit = values => {
         localStorage.setItem(id, values.description)
