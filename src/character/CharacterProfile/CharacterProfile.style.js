@@ -25,6 +25,11 @@ const useStyles = makeStyles({
     //marginLeft: '20px'
 
   },
+  abaProfile: {
+    width: '100%',
+    background: '#ff0000',
+    color: '#ff0000'
+  },
   titulo: {
     fontSize: '40px',
     padding: '20px',

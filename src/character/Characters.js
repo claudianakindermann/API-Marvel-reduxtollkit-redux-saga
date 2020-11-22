@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
 import { 
     getCharactersRequest,
-    getCharactersPrev,
-    getCharactersNext
+    searchCharactersRequest
         } from './charactersSlice';
+
 import './Characters.style.css';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Loading from './../components/Loading/Loading';
-import { TextField, Button, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,66 +19,63 @@ import SearchIcon from '@material-ui/icons/Search';
 
 const Characters = () => {
     const dispatch = useDispatch();
-
-    const { register, handleSubmit, errors, setValue } = useForm({});
+    const { register, handleSubmit, errors } = useForm({});
+    const [ searching, setSearching ] = useState(false);
+    const [ parameter, setParameter ] = useState("");
 
     useEffect(() => {
-      dispatch(getCharactersRequest(0))
+      dispatch(getCharactersRequest({limit: 60, offset: 0}))
+      setSearching(false);
     }, [dispatch]);
 
     const { characters, loading } = useSelector(state => state.characters);     
-    const { total, page } = useSelector(state => state.characters.paging);    
+    const { total, page, limit } = useSelector(state => state.characters.paging);    
 
     const nextPage = () => {
-        if (page >= total) return;        
+        if ((page + limit) >= total) return;        
 
-        const offset = page + 60;       
+        const offset = page + limit;
         
-        dispatch(getCharactersNext(offset))
+        if (searching) {
+            dispatch(searchCharactersRequest({parameter, limit, offset}))
+        } else {
+            dispatch(getCharactersRequest({limit, offset}))
+        }
     };
 
     const prevPage = () => {
         if (page === 0) return;
         
-        const offset = page - 60;
-
-        dispatch(getCharactersPrev(offset))
+        const offset = page - limit;
+        
+        if (searching) {
+            dispatch(searchCharactersRequest({parameter, limit, offset}))
+        } else {
+            dispatch(getCharactersRequest({limit, offset}))
+        }
     };
 
-    const onSubmit = {
-
+    const onSubmit = (values) => {
+        setParameter(values.search);
+        if (!!values.search) {
+            dispatch(searchCharactersRequest({ parameter: values.search, limit: 20, offset: 0}));
+            setSearching(true);
+        } else {
+            dispatch(getCharactersRequest({limit: 60, offset: 0}))
+        }
     }; 
 
     return (
-        <Grid content className='charactersPage'>
-            {/* <form className="formSearch" noValidate onSubmit={handleSubmit(onSubmit)}>
-                <Grid className="actionsSearch" >
-                    <TextField
-                        inputRef={register}
-                        errors={errors}
-                        name='Search'
-                        variant="filled"
-                        margin="normal"
-                        id='search'
-                        label='search'
-                        size="small"
-                        InputLabelProps={{shrink:true}}
-                    />
-                </Grid>
-                <Grid className='actionsButtons'>
-                    <ArrowBackIosIcon className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIosIcon>
-                    <ArrowForwardIosIcon className="iconPagination" disabled={page >= total} onClick={nextPage}></ArrowForwardIosIcon>
-                </Grid>
-            </form> */}
+        <Grid content spacing={1} xs={12} className='charactersPage'>
             <Grid spacing={1} className="actions" >
-                <Paper component="form" className="formSearch">
+                <Paper component="form" className="formSearch" noValidate onSubmit={handleSubmit(onSubmit)}>
                     <InputBase
                         className="input"
                         placeholder="Search a character"
                         inputRef={register}
                         errors={errors}
                         id='search'
-
+                        name='search'
                     />
                     <IconButton type="submit" className="searchButton" aria-label="search">
                         <SearchIcon />
@@ -87,11 +84,9 @@ const Characters = () => {
                 </Paper>
                 <Grid className='actionsButtons'>
                     <ArrowBackIosIcon className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIosIcon>
-                    <ArrowForwardIosIcon className="iconPagination" disabled={page >= total} onClick={nextPage}></ArrowForwardIosIcon>
+                    <ArrowForwardIosIcon className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIosIcon>
                 </Grid>
             </Grid>
-
-
 
             <Grid spacing={1} className='charactersList'>
                 {characters.map(character => (   
@@ -112,14 +107,11 @@ const Characters = () => {
             </Grid>
             <Grid className='actionsButtons'>                
                 <ArrowBackIosIcon className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIosIcon>
-                <ArrowForwardIosIcon className="iconPagination" disabled={page >= total} onClick={nextPage}></ArrowForwardIosIcon>
-                {/* <button disabled={page === 0} onClick={prevPage}>Prev</button>
-                <button disabled={page >= total} onClick={nextPage}>Next</button>   */}
+                <ArrowForwardIosIcon className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIosIcon>
             </Grid>  
             <Loading loading={loading}/>       
         </Grid>
    )
 };
-
 
 export default Characters;

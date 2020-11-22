@@ -3,61 +3,50 @@ import { put, call, all, takeLatest } from "redux-saga/effects";
 import { 
     getCharactersRequest,
     getCharactersSucess,
-    getCharactersNext,
-    getCharactersNextSucess,
-    getCharactersPrev,
-    getCharactersPrevSucess,
     getProfileRequest,
     getProfileSucess,
+    searchCharactersRequest
 } from './charactersSlice';
 
 import {
     getCharacters,
-    getProfile
+    getProfile,
+    searchCharacters
 } from './CharactersService';
 
-export function* getCharactersRequestSaga(payload) {
+export function* getCharactersRequestSaga({ payload }) {
+    const offset = payload.offset;
     try {
         const { data } = yield call (getCharacters, payload)
-        yield put(getCharactersSucess(data))
+        console.log(offset)
+        yield put(getCharactersSucess({offset, data}))
     } catch (error) {        
         console.log(error)
     }    
 }
 
-export  function* getCharactersNextSaga(payload) {
-    try {
-        const { data } = yield call(getCharacters, payload)
-        yield put(getCharactersNextSucess(data))
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export  function* getCharactersPrevSaga(payload) {
-    console.log('saga prev:', payload)
-    try {
-        const { data } = yield call(getCharacters, payload)
-        yield put(getCharactersPrevSucess(data))
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 export function* getProfileRequestSaga(payload) {
     try {
         const { data } = yield call (getProfile, payload)
-        console.log('retorno do service', data)
         yield put(getProfileSucess(data))
     } catch (error) {
         console.log(error)        
     }
 }
 
+export function* searchCharactersRequestSaga({ payload }) {
+    const offset = payload.offset;
+    try {
+        const { data } = yield call (searchCharacters, payload)
+        yield put(getCharactersSucess({offset, data})) 
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export default all([
     takeLatest(getCharactersRequest.type, getCharactersRequestSaga),
-    takeLatest(getCharactersNext.type, getCharactersNextSaga),
-    takeLatest(getCharactersPrev.type, getCharactersPrevSaga),
     takeLatest(getProfileRequest.type, getProfileRequestSaga),
+    takeLatest(searchCharactersRequest.type, searchCharactersRequestSaga),
 ]);
 

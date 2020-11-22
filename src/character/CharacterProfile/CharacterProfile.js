@@ -8,7 +8,12 @@ import { yupResolver } from '@hookform/resolvers';
 import * as yup from "yup";
 
 import useStyles from './CharacterProfile.style.js';
-import { TextField, Button, Grid } from '@material-ui/core';
+import { 
+    TextField, 
+    Button, 
+    Grid
+ } from '@material-ui/core';
+
 
 const schema = yup.object().shape({
     description: yup.string().required(),
@@ -35,6 +40,7 @@ const CharacterProfile = () => {
     }, [dispatch, id, setValue, descriptionLocal], );
 
     const { character }  = useSelector(state => state.characters);
+    console.log('profile character = ', character);
     console.log('profile character = ', character?.thumbnail?.path);
 
     const onSubmit = values => {
@@ -42,6 +48,7 @@ const CharacterProfile = () => {
     };
 
     return (
+        <>
         <form className={classes.characterInfo} noValidate onSubmit={handleSubmit(onSubmit)}>     
             <Grid spacing={1} className={classes.content}>
                     <img className={classes.divImagem}
@@ -49,18 +56,21 @@ const CharacterProfile = () => {
                         alt={character?.thumbnail?.path + '.' + character?.thumbnail?.extension} 
                     />
                 <Grid item xs={2} sm={4} className={classes.descriptionContent}>
+                    <Grid className='abaProfile'>
+                        <div>series</div>
+                    </Grid>
                     <h1 classname={classes.titulo}>{character.name}</h1>
                     <TextField
                         inputRef={register}
                         errors={errors}
                         name='description'
+                        id='description'
                         multiline={true}            
                         rows={15}
                         fullWidth
                         variant="outlined"
                         margin="normal"
                         required
-                        id='description'
                         label='Description'
                         size="small"
                         InputLabelProps={{shrink:true}}
@@ -76,8 +86,9 @@ const CharacterProfile = () => {
                 </Grid>
             </Grid>  
         </form>
+        
+        </>
     )
-
 };
 
 export default CharacterProfile;

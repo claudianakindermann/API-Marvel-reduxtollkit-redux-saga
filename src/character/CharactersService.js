@@ -7,11 +7,14 @@ const timestamp = Number(new Date());
 const hash = md5.create();
 hash.update(timestamp + PRIVATE_KEY + PUBLIC_KEY);
 
-export async function getCharacters({ payload }){
-    return axios.get(`https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&orderBy=name&limit=60&offset=${payload}&apikey=${PUBLIC_KEY}&hash=${hash.hex()}`);
+export async function getCharacters(payload){
+    return axios.get(`https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&orderBy=name&limit=${payload.limit}&offset=${payload.offset}&apikey=${PUBLIC_KEY}&hash=${hash.hex()}`);
 };
 
 export async function getProfile({ payload }){
-    console.log('service', payload);
     return axios.get(`https://gateway.marvel.com/v1/public/characters/${payload}?ts=${timestamp}&apikey=${PUBLIC_KEY}&hash=${hash}`)
+};
+
+export async function searchCharacters(payload){
+    return axios.get(`https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${payload.parameter}&limit=${payload.limit}&offset=${payload.offset}&apikey=${PUBLIC_KEY}&ts=${timestamp}&hash=${hash.hex()}`)
 };
