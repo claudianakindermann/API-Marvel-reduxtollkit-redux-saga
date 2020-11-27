@@ -2,13 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
     loading: false,
+    loadingSeries: false,
     characters: [],
     character: {},
     paging: {
-        total: 0,
-        page: 0,
-        limit: 0,
-      }
+      total: 0,
+      page: 0,
+      limit: 0,
+    },
+    series: [],
+    pagingSeries: {
+      count: 0
+    }
   };
 
 const charactersSlice = createSlice({
@@ -31,10 +36,21 @@ const charactersSlice = createSlice({
     getProfileSucess: (state, {payload}) => {
       state.loading = false;
       state.character = payload.data.results[0];
+      console.log('character slice', state.character)
     },
     searchCharactersRequest: state => {
       state.loading = true;
     },   
+    getSeriesRequest: state => {
+      state.loadingSeries = true;
+    },
+    getSeriesSucess: (state, { payload }) => {
+      state.loadingSeries = false;
+      state.series = payload.data.results;
+      state.pagingSeries.count = payload.data?.count;
+      console.log('slice=', state.series)
+      console.log('state.pagingSeries.count=', state.pagingSeries.count)
+    },
   }
 })
 
@@ -43,7 +59,9 @@ export const {
     getCharactersSucess,
     getProfileRequest,
     getProfileSucess,
-    searchCharactersRequest
+    searchCharactersRequest,
+    getSeriesRequest,
+    getSeriesSucess
   } = charactersSlice.actions
 
 export default charactersSlice.reducer;

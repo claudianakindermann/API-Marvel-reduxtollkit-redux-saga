@@ -5,20 +5,22 @@ import {
     getCharactersSucess,
     getProfileRequest,
     getProfileSucess,
-    searchCharactersRequest
+    searchCharactersRequest,
+    getSeriesRequest,
+    getSeriesSucess
 } from './charactersSlice';
 
 import {
     getCharacters,
     getProfile,
-    searchCharacters
+    searchCharacters,
+    getSeries
 } from './CharactersService';
 
 export function* getCharactersRequestSaga({ payload }) {
     const offset = payload.offset;
     try {
         const { data } = yield call (getCharacters, payload)
-        console.log(offset)
         yield put(getCharactersSucess({offset, data}))
     } catch (error) {        
         console.log(error)
@@ -28,11 +30,13 @@ export function* getCharactersRequestSaga({ payload }) {
 export function* getProfileRequestSaga(payload) {
     try {
         const { data } = yield call (getProfile, payload)
+        // console.log('data', data)
         yield put(getProfileSucess(data))
     } catch (error) {
         console.log(error)        
     }
 }
+
 
 export function* searchCharactersRequestSaga({ payload }) {
     const offset = payload.offset;
@@ -44,9 +48,20 @@ export function* searchCharactersRequestSaga({ payload }) {
     }
 }
 
+export function* getSeriesRequestSaga(payload) {
+    try {
+        const { data } = yield call(getSeries, payload)
+        console.log('series saga', data)
+        yield put (getSeriesSucess(data))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export default all([
     takeLatest(getCharactersRequest.type, getCharactersRequestSaga),
     takeLatest(getProfileRequest.type, getProfileRequestSaga),
     takeLatest(searchCharactersRequest.type, searchCharactersRequestSaga),
+    takeLatest(getSeriesRequest.type, getSeriesRequestSaga),
 ]);
 

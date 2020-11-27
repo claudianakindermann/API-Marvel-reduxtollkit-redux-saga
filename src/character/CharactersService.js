@@ -18,3 +18,8 @@ export async function getProfile({ payload }){
 export async function searchCharacters(payload){
     return axios.get(`https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${payload.parameter}&limit=${payload.limit}&offset=${payload.offset}&apikey=${PUBLIC_KEY}&ts=${timestamp}&hash=${hash.hex()}`)
 };
+
+export async function getSeries({ payload }){
+    console.log('consulta séries >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+    return axios.get(`https://gateway.marvel.com/v1/public/characters/${payload}/series?ts=${timestamp}&apikey=${PUBLIC_KEY}&hash=${hash}`)
+}

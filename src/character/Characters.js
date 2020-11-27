@@ -29,7 +29,9 @@ const Characters = () => {
     }, [dispatch]);
 
     const { characters, loading } = useSelector(state => state.characters);     
-    const { total, page, limit } = useSelector(state => state.characters.paging);    
+    const { total, page, limit } = useSelector(state => state.characters.paging);
+    console.log('total=', total)
+    console.log('limit=', limit)
 
     const nextPage = () => {
         if ((page + limit) >= total) return;        
@@ -66,7 +68,7 @@ const Characters = () => {
     }; 
 
     return (
-        <Grid content spacing={1} xs={12} className='charactersPage'>
+        <Grid content className='charactersPage'>
             <Grid spacing={1} className="actions" >
                 <Paper component="form" className="formSearch" noValidate onSubmit={handleSubmit(onSubmit)}>
                     <InputBase
@@ -82,15 +84,15 @@ const Characters = () => {
                     </IconButton>
 
                 </Paper>
-                <Grid className='actionsButtons'>
+                <Grid content className='actionsButtons'>
                     <ArrowBackIosIcon className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIosIcon>
                     <ArrowForwardIosIcon className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIosIcon>
                 </Grid>
             </Grid>
 
-            <Grid spacing={1} className='charactersList'>
+            <Grid content className='charactersList'>
                 {characters.map(character => (   
-                    <Grid item xs={2} className="charactersItem" key={character.id}>
+                    <Grid item xs={2} sm={2} className="charactersItem" key={character.id}>
                         <div className="divImage">
                             <img className="image"
                                 src={character.thumbnail.path + '.' + character.thumbnail.extension} 
@@ -105,7 +107,7 @@ const Characters = () => {
                     </Grid>
                 ))}
             </Grid>
-            <Grid className='actionsButtons'>                
+            <Grid content className='actionsButtons'>                
                 <ArrowBackIosIcon className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIosIcon>
                 <ArrowForwardIosIcon className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIosIcon>
             </Grid>  
