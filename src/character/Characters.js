@@ -98,7 +98,7 @@ const Characters = () => {
                                 src={character.thumbnail.path + '.' + character.thumbnail.extension} 
                                 alt={character.thumbnail.path + '.' + character.thumbnail.extension} 
                                 width="190" 
-                                height="230" 
+                                height="230"
                             />
                         </div>
                         <div className="itemData">
