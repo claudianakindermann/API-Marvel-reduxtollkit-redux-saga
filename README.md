@@ -1,7 +1,5 @@
 # Exemplo de consumo da API Marvel
 
-Exemplo de consumo da API Marvel.
-
 ## Este miniprojeto contempla:
 - Listagem dos personagens da Marvel;
 - Pesquisa de personagens pelo seu nome;
@@ -14,7 +12,7 @@ Exemplo de consumo da API Marvel.
 ## Este projeto está EM CONSTRUÇÃO. Algumas funcionalidades e tratamentos estão pendentes:
 - Feedback ao usuário quando a descrição é salva;
 - Favoritar personagens;
-- Exibir empyt state quando nenhum personagem for salvo;
+- Tratar quando nenhum personagem for encontrado na pesquisa;
 - Nos detalhes do personagem, opção para ir para o próximo da lista;
 Algumas refatorações do código.
 
@@ -25,21 +23,18 @@ Algumas refatorações do código.
 -   [MATERIAL-UI](https://material-ui.com/)
 -   [React Router](https://reactrouter.com/)
 
-## Primeiros passos
+## Instalação
 
-Para instalar as dependencias é preciso executar o comando **yarn**:
+- Baixe o projeto;
+- Para instalar as dependencias execute o comando **yarn** na raiz do projeto:
 
 ```
 $ yarn
 ```
 
-## Comandos
+## Execução
 
-No diretório do projeto, você pode executar:
-
-### **start**
-
-Executa o aplicativo no modo de desenvolvimento.
+Na raiz do projeto execute:
 
 ```
 $ yarn start
