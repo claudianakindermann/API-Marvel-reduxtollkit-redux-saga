@@ -36,7 +36,6 @@ const charactersSlice = createSlice({
     getProfileSucess: (state, {payload}) => {
       state.loading = false;
       state.character = payload.data.results[0];
-      console.log('character slice', state.character)
     },
     searchCharactersRequest: state => {
       state.loading = true;
@@ -48,8 +47,6 @@ const charactersSlice = createSlice({
       state.loadingSeries = false;
       state.series = payload.data.results;
       state.pagingSeries.count = payload.data?.count;
-      console.log('slice=', state.series)
-      console.log('state.pagingSeries.count=', state.pagingSeries.count)
     },
   }
 })

@@ -30,7 +30,6 @@ export function* getCharactersRequestSaga({ payload }) {
 export function* getProfileRequestSaga(payload) {
     try {
         const { data } = yield call (getProfile, payload)
-        // console.log('data', data)
         yield put(getProfileSucess(data))
     } catch (error) {
         console.log(error)        

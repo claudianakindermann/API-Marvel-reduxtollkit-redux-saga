@@ -1,17 +1,27 @@
-Header#main-header {
+Header#mainHeader {
     width: 100%;
     background: #292929;
-    font-size: 30px;
-    padding: 0 0 25px 0;
-    color: #fff;
-    /* margin: 0px auto 20px; */
-    height: bold;
+    padding: 2px;
 }
-#main-header div {
+#divImage {
     width: 100%;
     display: flex;
     justify-content: center;
     border-bottom-width: thin;
     border-bottom-style: inset;
     border-bottom-color: #d3d3d3;
+}
+
+.optionsMenu {
+    display: flex;
+    justify-content: center;
+}    
+    
+.optionsMenu > a {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 14px;
+	padding: 6px 6px;
+ 	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none; /*retira o sublinhado do link*/
+	color: white;
 }

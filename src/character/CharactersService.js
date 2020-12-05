@@ -20,6 +20,5 @@ export async function searchCharacters(payload){
 };
 
 export async function getSeries({ payload }){
-    console.log('consulta séries >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
     return axios.get(`https://gateway.marvel.com/v1/public/characters/${payload}/series?ts=${timestamp}&apikey=${PUBLIC_KEY}&hash=${hash}`)
 }

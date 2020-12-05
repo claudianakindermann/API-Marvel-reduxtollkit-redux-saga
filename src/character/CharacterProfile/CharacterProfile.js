@@ -14,13 +14,13 @@ import useStyles from './CharacterProfile.style.js';
 import { 
     TextField, 
     Button, 
-    Grid
+    Grid,
+    GridList,
+    GridListTile,
+    GridListTileBar,
+    IconButton,
  } from '@material-ui/core';
  import EditIcon from '@material-ui/icons/Edit';
- import GridList from '@material-ui/core/GridList';
- import GridListTile from '@material-ui/core/GridListTile';
- import GridListTileBar from '@material-ui/core/GridListTileBar';
- import IconButton from '@material-ui/core/IconButton';
  import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 const schema = yup.object().shape({
@@ -31,23 +31,26 @@ const CharacterProfile = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const [showForm, setShowForm] = useState(false);
+    const [descriptionLocal, setDescriptionLocal] = useState();
     
     const { register, handleSubmit, errors, setValue} = useForm({
         resolver: yupResolver(schema)
     });
   
     const { id } = useParams(); //pegando da url
-    const descriptionLocal = (localStorage.getItem(id))
 
     useEffect(() => {
         dispatch(getProfileRequest(id))
-        if (!!descriptionLocal) {
+    }, [dispatch, id], );
+
+    useEffect(() => {
+        setDescriptionLocal(localStorage.getItem(id))
+        if (!!descriptionLocal || showForm) {
             setValue('description', descriptionLocal)
         };        
-    }, [dispatch, id, setValue, descriptionLocal], );
-
+    }, [showForm, id, setValue, descriptionLocal], );   
+ 
     const { character }  = useSelector(state => state.characters);
-    console.log('profile character = ', character);
 
     useEffect(() => {
         console.log('profile getSeriesRequest')
@@ -55,37 +58,34 @@ const CharacterProfile = () => {
     }, [dispatch, id], );
 
     const { series } = useSelector(state => state.characters)
-    console.log('profile series = ', series);
 
     const onSubmit = values => {
         localStorage.setItem(id, values.description)
     };
 
     const favoriteSeries = idSeries => {
-        console.log('idseries salvar', idSeries)
-        localStorage.setItem(idSeries, id)
+        localStorage.setItem(idSeries, id) //clau pendente
     };
 
-    console.log(character?.series?.items[0]?.name)
-    console.log(character?.series?.items[0]?.resourceURI )
+    console.log('descriptionLocal', descriptionLocal)
     return (
-        <Grid content spacing={1} className={classes.detail}>
-            <Grid content class={classes.titulo}>
-                <h1 class={classes.h1}>{character.name}</h1>
-                <EditIcon class={classes.edit} onClick={() => setShowForm(true)} > Edit </EditIcon>
-            </Grid>
-            <Grid content xs={12} spacing={1} className={classes.horizontal}>
-                <Grid item xs={9} className={classes.image}>
-                        <img
-                            src={character?.thumbnail?.path + '.' + character?.thumbnail?.extension} 
-                            alt={character?.thumbnail?.path + '.' + character?.thumbnail?.extension} 
-                            width="790" 
-                        />
+        <div className={classes.divDetail}>
+            <div class={classes.titulo}>
+                <h1 class={classes.h1}>{character.name}
+                    <EditIcon class={classes.edit} onClick={() => setShowForm(true)} > Edit </EditIcon>
+                </h1>
+            </div>
+            <Grid container spacing={2} className={classes.gridHorizontal}>
+                <Grid item xs={6} className={classes.divImageCharacter}>
+                    <img className={classes.imageCharacter}
+                        src={character?.thumbnail?.path + '.' + character?.thumbnail?.extension} 
+                        alt={character?.thumbnail?.path + '.' + character?.thumbnail?.extension} 
+                    />
                 </Grid>
                 {showForm ? (
                     <Grid item xs={3} className={classes.gridForm} >
                         <form className={classes.characterForm} noValidate onSubmit={handleSubmit(onSubmit)}>     
-                                <Grid className={classes.descriptionContent}>
+                                <div className={classes.descriptionContent}>
                                     <TextField
                                         inputRef={register}
                                         errors={errors}
@@ -100,56 +100,59 @@ const CharacterProfile = () => {
                                         label='Description'
                                         size='medium'
                                         InputLabelProps={{shrink:true}}
+                                        placeholder='Enter the description of the character'
                                     />
-                                    <Grid className={classes.gridButtons}>
+                                    <div className={classes.divButtons}>
                                         <Button                        
                                             className={classes.buttonSave}
                                             type='submit'
                                             variant='contained'                      
-                                            color='secundary'
-                                        >
-                                            Save
-                                        </Button>
-                                        <Button                        
-                                            className={classes.buttonSave}
-                                            type='submit'
-                                            variant='contained'                      
-                                            color='secundary'
                                             onClick={() => setShowForm(false)}
                                             >
                                             Cancel
                                         </Button>
-                                    </Grid>
-                                </Grid>
+                                        <Button                        
+                                            className={classes.buttonSave}
+                                            type='submit'
+                                            variant='contained'                      
+                                            color='primary'
+                                            onClick={() => alert('Description saved successfully!')}  //Clau pendente  
+                                        >
+                                            Save
+                                        </Button>
+                                    </div>
+                                </div>
                         </form>
                     </Grid>
                 ) : (
-                    <GridList  cellHeight={17} spacing={1}  className={classes.seriesList}>
-                        {series.map(serie => (
-                            <GridListTile key={serie.id} cols={1} rows={20} className={classes.serieItem}>
-                                <img className={classes.serieImage}
-                                    src={serie.thumbnail.path + '.' + serie.thumbnail.extension}
-                                    alt={serie.thumbnail.path + '.' + serie.thumbnail.extension}
-                                    width='190'
-                                    height='230'
-                                />
-                                <GridListTileBar
-                                    title={serie.title}
-                                    titlePosition="top"
-                                    actionIcon={
-                                        <IconButton aria-label={`star ${serie.title}`} className={classes.iconSerie}>
-                                        <StarBorderIcon onClick={() => favoriteSeries(serie.id)}/>
-                                        </IconButton>
-                                    }
-                                    actionPosition="left"
-                                    className={classes.titleBar}
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
+                    <Grid item xs={4}  className={classes.seriesList}>
+                        <div className={classes.divGridList}>
+                            <GridList cellHeight={20} spacing={2} className={classes.gridList}>
+                                {series.map(serie => (
+                                    <GridListTile key={serie.id} cols={1} rows={20} className={classes.serieItem}>
+                                        <img className={classes.serieImage}
+                                            src={serie.thumbnail.path + '.' + serie.thumbnail.extension}
+                                            alt={serie.thumbnail.path + '.' + serie.thumbnail.extension}
+                                        />
+                                        <GridListTileBar
+                                            title={serie.title}
+                                            titlePosition="top"
+                                            actionIcon={
+                                                <IconButton aria-label={`star ${serie.title}`} className={classes.iconSerie}>
+                                                    <StarBorderIcon onClick={() => favoriteSeries(serie.id)}/>
+                                                </IconButton>
+                                            }
+                                            actionPosition="left"
+                                            className={classes.titleBar}
+                                            />
+                                    </GridListTile>
+                                ))}
+                            </GridList>
+                        </div>
+                    </Grid>
                 )}
             </Grid>
-        </Grid>
+        </div>
     )
 };
 
