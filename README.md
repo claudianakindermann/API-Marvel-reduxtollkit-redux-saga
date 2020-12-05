@@ -4,12 +4,12 @@
 - Listagem dos personagens da Marvel;
 - Pesquisa de personagens pelo seu nome;
 - Navegação nas diversas páginas de personagens;
-- Clicar em um personagem e ver mais informaçoes dele;
+- Detalhamento de um personagem;
 - Nos detalhes do personagem exibe a lista de séries dele;
 - Nos detalhes do personagem permite incluir uma descrição para o personagem;
 - A descrição do personagem é salva apenas no local storage.
 
-## Este projeto está EM CONSTRUÇÃO. Algumas funcionalidades e tratamentos estão pendentes:
+## Este projeto está EM CONSTRUÇÃO. Está pendente:
 - Feedback ao usuário quando a descrição é salva;
 - Favoritar personagens;
 - Tratar quando nenhum personagem for encontrado na pesquisa;
