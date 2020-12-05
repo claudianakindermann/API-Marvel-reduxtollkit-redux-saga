@@ -43,17 +43,21 @@ const CharacterProfile = () => {
         dispatch(getProfileRequest(id))
     }, [dispatch, id], );
 
-    useEffect(() => {
-        setDescriptionLocal(localStorage.getItem(id))
-        if (!!descriptionLocal || showForm) {
-            setValue('description', descriptionLocal)
-        };        
-    }, [showForm, id, setValue, descriptionLocal], );   
- 
     const { character }  = useSelector(state => state.characters);
 
     useEffect(() => {
-        console.log('profile getSeriesRequest')
+        const desc = localStorage.getItem(id);
+        if (!!desc) {
+            setDescriptionLocal(localStorage.getItem(id))
+        } else {
+            setDescriptionLocal(character?.description)
+        };
+        if (!!descriptionLocal && showForm) {
+            setValue('description', descriptionLocal)
+        };        
+    }, [character, showForm, id, setValue, descriptionLocal],);   
+ 
+    useEffect(() => {
         dispatch(getSeriesRequest(id))
     }, [dispatch, id], );
 
@@ -67,7 +71,6 @@ const CharacterProfile = () => {
         localStorage.setItem(idSeries, id) //clau pendente
     };
 
-    console.log('descriptionLocal', descriptionLocal)
     return (
         <div className={classes.divDetail}>
             <div class={classes.titulo}>
