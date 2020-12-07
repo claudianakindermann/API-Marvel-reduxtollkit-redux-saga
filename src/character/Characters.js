@@ -5,17 +5,24 @@ import { useForm } from 'react-hook-form'
 import { 
     getCharactersRequest,
     searchCharactersRequest
-        } from './charactersSlice';
-
+} from './charactersSlice';
 import './Characters.style.css';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import Loading from './../components/Loading/Loading';
-import { Grid } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
+// import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+// import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+// import SearchIcon from '@material-ui/icons/Search';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
+import {
+    ArrowBackIos,
+    ArrowForwardIos,
+    Search,
+    Favorite
+} from '@material-ui/icons';
+import { Grid,
+        Paper,
+        InputBase,
+        IconButton
+} from '@material-ui/core';
 
 const Characters = () => {
     const dispatch = useDispatch();
@@ -30,8 +37,6 @@ const Characters = () => {
 
     const { characters, loading } = useSelector(state => state.characters);     
     const { total, page, limit } = useSelector(state => state.characters.paging);
-    console.log('total=', total)
-    console.log('limit=', limit)
 
     const nextPage = () => {
         if ((page + limit) >= total) return;        
@@ -67,6 +72,22 @@ const Characters = () => {
         }
     }; 
 
+
+    const setFavorite = id => {
+        const characterFavorite = localStorage.getItem('favorite' + id);
+        if (characterFavorite === 'white'|| !characterFavorite) {
+            localStorage.setItem('favorite' + id, 'red');
+        } else {
+            localStorage.setItem('favorite' + id, 'white');
+        }
+    };
+
+    const getFavorite = id => {
+        const characterFavorite = localStorage.getItem('favorite' + id);
+        if (!characterFavorite) return 'white';
+        return characterFavorite;
+    };
+
     return (
         <Grid content className='charactersPage'>
             <Grid spacing={1} className="actions" >
@@ -80,13 +101,13 @@ const Characters = () => {
                         name='search'
                     />
                     <IconButton type="submit" className="searchButton" aria-label="search">
-                        <SearchIcon />
+                        <Search />
                     </IconButton>
 
                 </Paper>
                 <Grid content className='actionsButtons'>
-                    <ArrowBackIosIcon className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIosIcon>
-                    <ArrowForwardIosIcon className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIosIcon>
+                    <ArrowBackIos className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIos>
+                    <ArrowForwardIos className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIos>
                 </Grid>
             </Grid>
 
@@ -102,14 +123,15 @@ const Characters = () => {
                             />
                         </div>
                         <div className="itemData">
-                            <Link className="link" to={`/characters/${character.id}`}>{character.name}</Link>  
+                            <Link className="link" to={`/characters/${character.id}`}>{character.name}</Link>
+                            <Favorite className="favorite" style={{ color: getFavorite(character.id) }} onClick={() => setFavorite(character.id)}/>
                         </div>              
                     </Grid>
                 ))}
             </Grid>
             <Grid content className='actionsButtons'>                
-                <ArrowBackIosIcon className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIosIcon>
-                <ArrowForwardIosIcon className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIosIcon>
+                <ArrowBackIos className="iconPagination" disabled={page === 0} onClick={prevPage}></ArrowBackIos>
+                <ArrowForwardIos className="iconPagination" disabled={(page + limit) >= total} onClick={nextPage}></ArrowForwardIos>
             </Grid>  
             <Loading loading={loading}/>       
         </Grid>

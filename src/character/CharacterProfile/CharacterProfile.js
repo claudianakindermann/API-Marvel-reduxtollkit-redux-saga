@@ -65,6 +65,7 @@ const CharacterProfile = () => {
 
     const onSubmit = values => {
         localStorage.setItem(id, values.description)
+        setShowForm(false)
     };
 
     const favoriteSeries = idSeries => {
@@ -74,9 +75,12 @@ const CharacterProfile = () => {
     return (
         <div className={classes.divDetail}>
             <div class={classes.titulo}>
-                <h1 class={classes.h1}>{character.name}
+                <h1>{character.name}</h1>
+                <div class={classes.divParagrafo}>
+                    <h4 class={classes.h4}>Description:</h4>
+                    <p class={classes.paragrafo}>{descriptionLocal}</p>
                     <EditIcon class={classes.edit} onClick={() => setShowForm(true)} > Edit </EditIcon>
-                </h1>
+                </div>
             </div>
             <Grid container spacing={2} className={classes.gridHorizontal}>
                 <Grid item xs={6} className={classes.divImageCharacter}>
@@ -119,7 +123,6 @@ const CharacterProfile = () => {
                                             type='submit'
                                             variant='contained'                      
                                             color='primary'
-                                            onClick={() => alert('Description saved successfully!')}  //Clau pendente  
                                         >
                                             Save
                                         </Button>

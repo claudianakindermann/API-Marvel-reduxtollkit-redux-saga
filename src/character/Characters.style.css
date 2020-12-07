@@ -6,6 +6,12 @@
     max-width: 1200px;
 
 }
+
+.favorite {
+    /* color: white */
+    color:'#ED260C'
+}
+
 .charactersList {
     display: flex;
     flex-wrap: wrap;

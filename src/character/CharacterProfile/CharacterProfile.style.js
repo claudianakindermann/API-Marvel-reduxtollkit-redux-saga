@@ -6,6 +6,21 @@ const useStyles = makeStyles((theme) => ({
   },  
   titulo: {
     marginLeft: '100px',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  divParagrafo: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+  h4: {
+    marginTop: '0px',
+  },
+  paragrafo: {
+    margin: '0px 10px 0px 10px',
+    textOverflow: 'clip ellipsis',
+    whiteSpace: 'rap',
   },
   gridHorizontal: {
     margin: 'auto',
